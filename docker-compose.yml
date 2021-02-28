@@ -1,0 +1,24 @@
+# The whole docker-compose file is equal to
+# docker run -it -p 3000:3000 -v /app/node_modules -v $(pwd):/app 7a0603c96e4b
+version: "3"
+services:
+  web:
+    # when you use .dev file you need to specify context and dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+    # Add stdin_open property to your docker-compose.yml file
+    stdin_open: true
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command:  ["npm", "run", "test"]
